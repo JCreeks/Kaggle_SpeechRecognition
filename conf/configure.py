@@ -16,6 +16,7 @@ import time
 
 class Configure(object):
 
+    model_path = '../model'
     train_data_path = '../input/train/audio'
     test_data_path = '../input/test/audio'
 
