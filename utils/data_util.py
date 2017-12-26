@@ -20,22 +20,28 @@ def load_dataset():
     if not os.path.exists(Configure.processed_train_path):
         train = pd.read_csv(Configure.original_train_path)
     else:
-        with open(Configure.processed_train_path, "rb") as f:
-            train = cPickle.load(f)
+        with open(Configure.x_train_path, "rb") as f:
+            x_train = cPickle.load(f)
+        with open(Configure.y_train_path, "rb") as f:
+            y_train = cPickle.load(f)
 
     if not os.path.exists(Configure.processed_test_path):
         test = pd.read_csv(Configure.original_test_path)
     else:
-        with open(Configure.processed_test_path, "rb") as f:
-            test = cPickle.load(f)
-    return train, test
+        with open(Configure.x_test_path, "rb") as f:
+            x_test = cPickle.load(f)
+    return x_train, y_train, x_test
 
 
-def save_dataset(train, test):
-    if train is not None:
-        with open(Configure.processed_train_path, "wb") as f:
-            cPickle.dump(train, f, -1)
+def save_dataset(x_train, y_train, x_test):
+    if x_train is not None:
+        with open(Configure.x_train_path, "wb") as f:
+            cPickle.dump(x_train, f, -1)
+            
+    if y_train is not None:
+        with open(Configure.y_train_path, "wb") as f:
+            cPickle.dump(y_train, f, -1)
 
-    if test is not None:
-        with open(Configure.processed_test_path, "wb") as f:
-            cPickle.dump(test, f, -1)
+    if x_test is not None:
+        with open(Configure.x_test_path, "wb") as f:
+            cPickle.dump(x_test, f, -1)
