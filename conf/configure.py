@@ -2,8 +2,8 @@
 # _*_ coding: utf-8 _*_
 
 """
-@author: MarkLiu
-@time  : 17-6-26 下午3:14
+@author: Jing Guo
+@time  : 12/26/17
 """
 import os
 import sys
@@ -19,5 +19,8 @@ class Configure(object):
     model_path = '../model'
     train_data_path = '../input/train/audio'
     test_data_path = '../input/test/audio'
+    
+    processed_train_path = '../input/train_dataset.pkl'
+    processed_test_path = '../input/test_dataset.pkl'
 
     submission_path = '../output/submission_{}.csv'.format(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
