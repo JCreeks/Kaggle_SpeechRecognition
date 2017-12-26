@@ -115,41 +115,53 @@ def test_data_generator(batch=16):
         yield fnames, imgs
     raise StopIteration()
 
-labels, fnames = list_wavs_fname(Configure.train_data_path)
+# labels, fnames = list_wavs_fname(Configure.train_data_path)
 
-new_sample_rate = 8000
-chopNum = 1000 #default num=20
-y_train = []
-#x_train = []
+# new_sample_rate = 8000
+# chopNum = 1000 #default num=20
+# y_train = []
+# #x_train = []
 
-for label, fname in zip(labels, fnames):
-    sample_rate, samples = wavfile.read(os.path.join(Configure.train_data_path, label, fname))
-    samples = pad_audio(samples)
-    if len(samples) > 16000:
-        n_samples = chop_audio(samples, num=chopNum)
-    else: n_samples = [samples]
-    for samples in n_samples:
-        resampled = signal.resample(samples, int(new_sample_rate / sample_rate * samples.shape[0]))
-        _, _, specgram = log_specgram(resampled, sample_rate=new_sample_rate)
-        y_train.append(label)
-        #x_train.append(specgram)
-#x_train = np.array(x_train)
-#x_train = x_train.reshape(tuple(list(x_train.shape) + [1]))
-y_train = label_transform(y_train, relabel=True, get_dummies=True)
-label_index = y_train.columns.values
-# y_train = y_train.values
-# y_train = np.array(y_train)
-del labels, fnames, y_train
-gc.collect()
+# for label, fname in zip(labels, fnames):
+#     sample_rate, samples = wavfile.read(os.path.join(Configure.train_data_path, label, fname))
+#     samples = pad_audio(samples)
+#     if len(samples) > 16000:
+#         n_samples = chop_audio(samples, num=chopNum)
+#     else: n_samples = [samples]
+#     for samples in n_samples:
+#         resampled = signal.resample(samples, int(new_sample_rate / sample_rate * samples.shape[0]))
+#         _, _, specgram = log_specgram(resampled, sample_rate=new_sample_rate)
+#         y_train.append(label)
+#         #x_train.append(specgram)
+# #x_train = np.array(x_train)
+# #x_train = x_train.reshape(tuple(list(x_train.shape) + [1]))
+# y_train = label_transform(y_train, relabel=True, get_dummies=True)
+# label_index = y_train.columns.values
+# # y_train = y_train.values
+# # y_train = np.array(y_train)
+# del labels, fnames, y_train
+# gc.collect()
+#print(label_index)
+label_index = ['down', 'go', 'left', 'no', 'off', 'on', 'right', 'silence', 'stop', 'unknown', 'up',\
+ 'yes']
 
 # averaging modeling 
-weight = [.4, .3, .3] # default []
+#weight = [] # default []
+weight = [.5, .25, .25]
+weight = [i/sum(weight) for i in weight]
 index = []
 results = []
 modelPaths = glob(os.path.join(Configure.model_path, '*class12*'))
+modelList = []
+for modelFile in modelPaths:
+    model = load_model(modelFile)
+    modelList.append(model)
 print("start averaging...")
 for fnames, imgs in test_data_generator(batch=32):
-    predList = [load_model(model).predict(imgs) for model in modelPaths]
+    predList = []
+    for model in modelList:
+        predicts = model.predict(imgs)
+        predList.append(predicts)
     if len(predList)==len(weight) and sum(weight)==1.0:
         predList = [a*b for a, b in zip(weight, predList)]
     predicts = sum(predList)/len(modelPaths)
