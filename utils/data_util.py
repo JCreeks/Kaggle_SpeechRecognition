@@ -19,8 +19,6 @@ from conf.configure import Configure
 
 def load_dataset():
     if not os.path.exists(Configure.processed_train_path):
-        train = pd.read_csv(Configure.original_train_path)
-    else:
         with open(Configure.x_train_path, "rb") as f:
             x_train = pickle.load(f)
 #             x_train = cPickle.load(f)
@@ -29,15 +27,15 @@ def load_dataset():
 #             y_train = cPickle.load(f)
 
     if not os.path.exists(Configure.processed_test_path):
-        test = pd.read_csv(Configure.original_test_path)
-    else:
         with open(Configure.x_test_path, "rb") as f:
             x_test = pickle.load(f)
 #             x_test = cPickle.load(f)
-    return x_train, y_train, x_test
+    with open(Configure.test_fname_path, "rb") as f:
+            test_fname = pickle.load(f)
+    return x_train, y_train, x_test, test_fname
 
 
-def save_dataset(x_train, y_train, x_test):
+def save_dataset(x_train, y_train, x_test=None, test_fname=None):
     if x_train is not None:
         with open(Configure.x_train_path, "wb") as f:
             pickle.dump(x_train, f, -1)
@@ -52,3 +50,7 @@ def save_dataset(x_train, y_train, x_test):
         with open(Configure.x_test_path, "wb") as f:
             pickle.dump(x_test, f, -1)
 #             cPickle.dump(x_test, f, -1)
+
+    if test_fname is not None:
+        with open(Configure.test_fname_path, "wb") as f:
+            pickle.dump(test_fname, f, -1)

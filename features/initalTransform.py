@@ -142,6 +142,50 @@ del labels, fnames
 gc.collect()
 
 print('x_train:', x_train.shape, ', y_train:', y_train.shape)
-print("Save data...")
-data_util.save_dataset(x_train, y_train, None)
+print("Save train data...")
+data_util.save_dataset(x_train, y_train)
 
+del x_train, y_train
+gc.collect()
+
+batch=16
+test_fname = []
+x_test = []
+fpaths = glob(os.path.join(Configure.test_data_path, '*wav'))
+i = 0
+for path in fpaths:
+#     if i == 0:
+#         imgs = []
+#         fnames = []
+#     i += 1
+    rate, samples = wavfile.read(path)
+    samples = pad_audio(samples)
+    resampled = signal.resample(samples, int(new_sample_rate / rate * samples.shape[0]))
+    _, _, specgram = log_specgram(resampled, sample_rate=new_sample_rate)
+#     imgs.append(specgram)
+# #         fnames.append(path.split('\\')[-1])
+#     fnames.append(path.split('/')[-1])
+    test_fname.append(path.split('/')[-1])
+    x_test.append(specgram)
+#     if i == batch:
+#         i = 0
+#         imgs = np.array(imgs)
+#         imgs = imgs.reshape(tuple(list(imgs.shape) + [1]))
+#         test_fname.extend(fnames)
+#         x_test.extend(imgs)
+# #         yield fnames, imgs
+# if i < batch:
+#     imgs = np.array(imgs)
+#     imgs = imgs.reshape(tuple(list(imgs.shape) + [1]))
+#     test_fname.extend(fnames)
+#     x_test.extend(imgs)
+#     yield fnames, imgs
+
+x_test = np.array(x_test)
+x_test = x_test.reshape(tuple(list(x_test.shape) + [1]))
+
+print('x_test:', x_test.shape, ', test_fname:', len(test_fname))
+print("Save test data...")
+data_util.save_dataset(None, None, x_test, test_fname)
+del x_test, test_fname
+gc.collect()

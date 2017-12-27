@@ -20,9 +20,12 @@ class Configure(object):
     train_data_path = '../input/train/audio'
     test_data_path = '../input/test/audio'
     
+    processed_train_path = '../input/train_dataset.pkl'
+    processed_test_path = '../input/test_dataset.pkl'
+    
     x_train_path = '../input/x_train.pkl'
     y_train_path = '../input/y_train.pkl'
     x_test_path = '../input/x_test.pkl'
-    y_test_path = '../input/y_test.pkl'
+    test_fname_path = '../input/test_fname.pkl'
 
     submission_path = '../output/submission_{}.csv'.format(time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())))
