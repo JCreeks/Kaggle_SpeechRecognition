@@ -3,7 +3,8 @@
 
 # ## Introduction 
 # 
-# Hello! This is my very first Kernel. It is meant to give a grasp of a problem of speech representation. I'd also like to take a look on a features specific to this dataset. 
+# Hello! This is my very first Kernel. It is meant to give a grasp of a problem of speech representation. 
+# I'd also like to take a look on a features specific to this dataset. 
 # 
 # Content:<br>
 # * [1. Visualization of the recordings - input features](#visualization)
@@ -61,8 +62,10 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # # 1. Visualization 
 # <a id="visualization"></a> 
 # 
-# There are two theories of a human hearing - [place](https://en.wikipedia.org/wiki/Place_theory_(hearing) (frequency-based) and [temporal](https://en.wikipedia.org/wiki/Temporal_theory_(hearing))
-# In speech recognition, I see two main tendencies - to input [spectrogram](https://en.wikipedia.org/wiki/Spectrogram) (frequencies), and more sophisticated features MFCC - Mel-Frequency Cepstral Coefficients, PLP. You rarely work with raw, temporal data.
+# There are two theories of a human hearing - [place](https://en.wikipedia.org/wiki/Place_theory_(hearing) (frequency-based) and 
+# [temporal](https://en.wikipedia.org/wiki/Temporal_theory_(hearing))
+# In speech recognition, I see two main tendencies - to input [spectrogram](https://en.wikipedia.org/wiki/Spectrogram) (frequencies), 
+# and more sophisticated features MFCC - Mel-Frequency Cepstral Coefficients, PLP. You rarely work with raw, temporal data.
 # 
 # Let's visualize some recordings!
 # 
@@ -81,7 +84,8 @@ sample_rate, samples = wavfile.read(str(train_audio_path) + filename)
 
 # Define a function that calculates spectrogram.
 # 
-# Note, that we are taking logarithm of spectrogram values. It will make our plot much more clear, moreover, it is strictly connected to the way people hear.
+# Note, that we are taking logarithm of spectrogram values. It will make our plot much more clear, moreover, 
+# it is strictly connected to the way people hear.
 # We need to assure that there are no 0 values as input to logarithm.
 
 # In[3]:
@@ -125,7 +129,8 @@ ax2.set_ylabel('Freqs in Hz')
 ax2.set_xlabel('Seconds')
 
 
-# If we use spectrogram as an input features for NN, we have to remember to normalize features. (We need to normalize over all the dataset, here's example just for one, which doesn't give good *mean* and *std*!)
+# If we use spectrogram as an input features for NN, we have to remember to normalize features. 
+# (We need to normalize over all the dataset, here's example just for one, which doesn't give good *mean* and *std*!)
 
 # In[5]:
 
@@ -135,12 +140,15 @@ std = np.std(spectrogram, axis=0)
 spectrogram = (spectrogram - mean) / std
 
 
-# There is an interesting fact to point out. We have ~160 features for each frame, frequencies are between 0 and 8000. It means, that one feature corresponds to 50 Hz. However, [frequency resolution of the ear is 3.6 Hz within the octave of 1000 – 2000 Hz](https://en.wikipedia.org/wiki/Psychoacoustics) It means, that people are far more precise and can hear much smaller details than those represented by spectrograms like above.
+# There is an interesting fact to point out. We have ~160 features for each frame, frequencies are between 0 and 8000. 
+# It means, that one feature corresponds to 50 Hz. However, [frequency resolution of the ear is 3.6 Hz within the octave of 1000 – 2000 Hz](https://en.wikipedia.org/wiki/Psychoacoustics) It means, that people are far more precise and can hear much smaller details than those represented by spectrograms like above.
 
 # ## 1.2. MFCC
 # <a id="mfcc"></a> 
 # 
-# If you want to get to know some details about *MFCC* take a look at this great tutorial. [MFCC explained](http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/) You can see, that it is well prepared to imitate human hearing properties.
+# If you want to get to know some details about *MFCC* take a look at this great tutorial. 
+# [MFCC explained](http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/) 
+# You can see, that it is well prepared to imitate human hearing properties.
 # 
 # You can calculate *Mel power spectrogram* and *MFCC* using for example *librosa* python package.
 # 
@@ -179,9 +187,12 @@ plt.colorbar()
 plt.tight_layout()
 
 
-# In classical, but still state-of-the-art systems, *MFCC*  or similar features are taken as the input to the system instead of spectrograms.
+# In classical, but still state-of-the-art systems, *MFCC*  or similar features are taken as the input to the system instead of 
+# spectrograms.
 # 
-# However, in end-to-end (often neural-network based) systems, the most common input features are probably raw spectrograms, or mel power spectrograms. For example *MFCC* decorrelates features, but NNs deal with correlated features well. Also, if you'll understand mel filters, you may consider their usage sensible.a
+# However, in end-to-end (often neural-network based) systems, the most common input features are probably raw spectrograms, 
+# or mel power spectrograms. For example *MFCC* decorrelates features, but NNs deal with correlated features well. 
+# Also, if you'll understand mel filters, you may consider their usage sensible.a
 # 
 # It is your decision which to choose!
 
@@ -219,8 +230,10 @@ py.iplot(fig)
 ipd.Audio(samples, rate=sample_rate)
 
 
-# I consider that some *VAD* (Voice Activity Detection) will be really useful here. Although the words are short, there is a lot of silence in them. A decent *VAD* can reduce training size a lot, accelerating training speed significantly.
-# Let's cut a bit of the file from the beginning and from the end. and listen to it again (based on a plot above, we take from 4000 to 13000):
+# I consider that some *VAD* (Voice Activity Detection) will be really useful here. Although the words are short, 
+# there is a lot of silence in them. A decent *VAD* can reduce training size a lot, accelerating training speed significantly.
+# Let's cut a bit of the file from the beginning and from the end. and listen to it again (based on a plot above, 
+# we take from 4000 to 13000):
 
 # In[10]:
 
@@ -229,7 +242,8 @@ samples_cut = samples[4000:13000]
 ipd.Audio(samples_cut, rate=sample_rate)
 
 
-# We can agree that the entire word can be heard. It is impossible to cut all the files manually and do this basing on the simple plot. But you can use for example *webrtcvad* package to have a good *VAD*.
+# We can agree that the entire word can be heard. It is impossible to cut all the files manually and do this basing on the simple plot. 
+# But you can use for example *webrtcvad* package to have a good *VAD*.
 # 
 # Let's plot it again, together with guessed alignment of* 'y' 'e' 's'* graphems
 
@@ -267,11 +281,15 @@ for xc in xcoords:
 # 
 # Another way to reduce the dimensionality of our data is to resample recordings.
 # 
-# You can hear that the recording don't sound very natural, because they are sampled with 16k frequency, and we usually hear much more. However, [the most speech related frequencies are presented in smaller band](https://en.wikipedia.org/wiki/Voice_frequency). That's why you can still understand another person talking to the telephone, where GSM signal is sampled to 8000 Hz.
+# You can hear that the recording don't sound very natural, because they are sampled with 16k frequency, and we usually hear much more. 
+# However, [the most speech related frequencies are presented in smaller band](https://en.wikipedia.org/wiki/Voice_frequency). 
+# That's why you can still understand another person talking to the telephone, where GSM signal is sampled to 8000 Hz.
 # 
-# Summarizing, we could resample our dataset to 8k. We will discard some information that shouldn't be important, and we'll reduce size of the data.
+# Summarizing, we could resample our dataset to 8k. We will discard some information that shouldn't be important, 
+# and we'll reduce size of the data.
 # 
-# We have to remember that it can be risky, because this is a competition, and sometimes very small difference in performance wins, so we don't want to lost anything. On the other hand, first experiments can be done much faster with smaller training size.
+# We have to remember that it can be risky, because this is a competition, and sometimes very small difference in performance wins, 
+# so we don't want to lost anything. On the other hand, first experiments can be done much faster with smaller training size.
 # 
 # We'll need to calculate FFT (Fast Fourier Transform). Definition:
 # 
@@ -289,7 +307,8 @@ def custom_fft(y, fs):
     return xf, vals
 
 
-# Let's read some recording, resample it, and listen. We can also compare FFT, Notice, that there is almost no information above 4000 Hz in original signal.
+# Let's read some recording, resample it, and listen. We can also compare FFT, Notice, 
+# that there is almost no information above 4000 Hz in original signal.
 
 # In[13]:
 
@@ -352,7 +371,8 @@ plt.show()
 # 5. Features normalization with *mean* and *std*
 # 6. Stacking of a given number of frames to get temporal information
 # 
-# It's a pity it can't be done in notebook. It has not much sense to write things from zero, and everything is ready to take, but in packages, that can not be imported in Kernels.
+# It's a pity it can't be done in notebook. It has not much sense to write things from zero, and everything is ready to take, 
+# but in packages, that can not be imported in Kernels.
 
 # 
 # # 2. Dataset investigation
@@ -402,7 +422,8 @@ py.iplot(go.Figure(data=[trace], layout=layout))
 # ## 2.2. Deeper into recordings
 # <a id="deeper"></a> 
 
-# There's a very important fact. Recordings come from very different sources. As far as I can tell, some of them can come from mobile GSM channel.
+# There's a very important fact. Recordings come from very different sources. As far as I can tell, 
+# some of them can come from mobile GSM channel.
 # 
 # Nevertheless,** it is extremely important to split the dataset in a way that one speaker doesn't occur in both train and test sets.**
 # Just take a look and listen to this two examlpes:
@@ -526,11 +547,18 @@ for direct in dirs:
 # ## 2.5. Gaussian Mixtures modeling
 # <a id="gmms"></a> 
 # 
-# We can see that mean FFT looks different for every word. We could model each FFT with a mixture of Gaussian distributions. Some of them however, look almost identical on FFT, like *stop* and *up*... But wait, they are still distinguishable when we look at spectrograms! High frequencies are earlier than low at the beginning of *stop* (probably *s*).
+# We can see that mean FFT looks different for every word. We could model each FFT with a mixture of Gaussian distributions. 
+# Some of them however, look almost identical on FFT, like *stop* and *up*... 
+# But wait, they are still distinguishable when we look at spectrograms! 
+# High frequencies are earlier than low at the beginning of *stop* (probably *s*).
 # 
-# That's why temporal component is also necessary. There is a [Kaldi](http://kaldi-asr.org/) library, that can model words (or smaller parts of words) with GMMs and model temporal dependencies with [Hidden Markov Models](https://github.com/danijel3/ASRDemos/blob/master/notebooks/HMM_FST.ipynb).
+# That's why temporal component is also necessary. There is a [Kaldi](http://kaldi-asr.org/) library, 
+# that can model words (or smaller parts of words) with GMMs and model temporal dependencies with 
+# [Hidden Markov Models](https://github.com/danijel3/ASRDemos/blob/master/notebooks/HMM_FST.ipynb).
 # 
-# We could use simple GMMs for words to check what can we model and how hard it is to distinguish the words. We can use [Scikit-learn](http://scikit-learn.org/) for that, however it is not straightforward and lasts very long here, so I abandon this idea for now.
+# We could use simple GMMs for words to check what can we model and how hard it is to distinguish the words. 
+# We can use [Scikit-learn](http://scikit-learn.org/) for that, however it is not straightforward and lasts very long here, 
+# so I abandon this idea for now.
 
 # ## 2.6. Frequency components across the words
 # <a id="components"></a> 
@@ -590,7 +618,8 @@ violinplot_frequency(dirs, 120)
 # ## 2.7. Anomaly detection
 # <a id="anomaly"></a> 
 # 
-# We should check if there are any recordings that somehow stand out from the rest. We can lower the dimensionality of the dataset and interactively check for any anomaly.
+# We should check if there are any recordings that somehow stand out from the rest. 
+# We can lower the dimensionality of the dataset and interactively check for any anomaly.
 # We'll use PCA for dimensionality reduction:
 
 # In[30]:
@@ -627,7 +656,8 @@ def interactive_3d_plot(data, names):
 interactive_3d_plot(fft_all, names)
 
 
-# Notice that there are *yes/e4b02540_nohash_0.wav*, *go/0487ba9b_nohash_0.wav* and more points, that lie far away from the rest. Let's listen to them.
+# Notice that there are *yes/e4b02540_nohash_0.wav*, *go/0487ba9b_nohash_0.wav* and more points, 
+# that lie far away from the rest. Let's listen to them.
 
 # In[31]:
 
@@ -659,17 +689,25 @@ ipd.Audio(join(train_audio_path, 'seven/b1114e4f_nohash_0.wav'))
 # 
 # You can take many different approches for the competition. I can't really advice any of that. I'd like to share my initial thoughts.
 # 
-# There is a trend in recent years to propose solutions based on neural networks. Usually there are two architectures. My ideas are here.
+# There is a trend in recent years to propose solutions based on neural networks. Usually there are two architectures. 
+# My ideas are here.
 # 
 # 1. Encoder-decoder: https://arxiv.org/abs/1508.01211
 # 2. RNNs with CTC loss: https://arxiv.org/abs/1412.5567<br>
-# For me, 1 and 2  are a sensible choice for this competition, especially if you do not have background in SR field. They try to be end-to-end solutions. Speech recognition is a really big topic and it would be hard to get to know important things in short time.
+# For me, 1 and 2  are a sensible choice for this competition, especially if you do not have background in SR field. 
+# They try to be end-to-end solutions. Speech recognition is a really big topic 
+# and it would be hard to get to know important things in short time.
 # 
-# 3. Classic speech recognition is described here: http://www.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/tutorial%20on%20hmm%20and%20applications.pdf
+# 3. Classic speech recognition is described here: 
+# http://www.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/tutorial%20on%20hmm%20and%20applications.pdf
 # 
-# You can find *Kaldi* [Tutorial for dummies](http://kaldi-asr.org/doc/kaldi_for_dummies.html), with a problem similar to this competition in some way.
+# You can find *Kaldi* [Tutorial for dummies](http://kaldi-asr.org/doc/kaldi_for_dummies.html), 
+# with a problem similar to this competition in some way.
 # 
-# 4. Very deep CNN - Don't know if it is used for SR. However, most papers concern Large Vocabulary Continuous Speech Recognition Systems (LVCSR). We got different task here - a very small vocabulary, and recordings with only one word in it, with a (mostly) given length. I suppose such approach can win the competition. 
+# 4. Very deep CNN - Don't know if it is used for SR. 
+# However, most papers concern Large Vocabulary Continuous Speech Recognition Systems (LVCSR). 
+# We got different task here - a very small vocabulary, and recordings with only one word in it, with a (mostly) given length. 
+# I suppose such approach can win the competition. 
 # 
 
 # ---
