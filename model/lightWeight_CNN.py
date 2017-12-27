@@ -93,7 +93,8 @@ def list_wavs_fname(dirpath, ext='wav'):
 
 # __pad_audio__ will pad audios that are less than 16000(1 second) with 0s to make them all have the same length.
 # 
-# __chop_audio__ will chop audios that are larger than 16000(eg. wav files in background noises folder) to 16000 in length. In addition, it will create several chunks out of one large wav files given the parameter 'num'.
+# __chop_audio__ will chop audios that are larger than 16000(eg. wav files in background noises folder) to 16000 in length. 
+# In addition, it will create several chunks out of one large wav files given the parameter 'num'.
 # 
 # __label_transform__ transform labels into dummies values. It's used in combination with softmax to predict the label.
 
