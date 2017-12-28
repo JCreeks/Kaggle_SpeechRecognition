@@ -17,23 +17,33 @@ import pandas as pd
 from conf.configure import Configure
 
 
-def load_dataset():
-    if not os.path.exists(Configure.processed_train_path):
+def load_train():
+    if not os.path.exists(Configure.cleaned_x_train_path):
         with open(Configure.x_train_path, "rb") as f:
             x_train = pickle.load(f)
 #             x_train = cPickle.load(f)
         with open(Configure.y_train_path, "rb") as f:
             y_train = pickle.load(f)
 #             y_train = cPickle.load(f)
+    else:
+        with open(Configure.cleaned_x_train_path, "rb") as f:
+            x_train = pickle.load(f)
+        with open(Configure.cleaned_y_train_path, "rb") as f:
+            y_train = pickle.load(f)
+    
+    print('x_train:', x_train.shape, ', y_train:', y_train.shape)
+    return x_train, y_train
 
+def load_test():
     if not os.path.exists(Configure.processed_test_path):
         with open(Configure.x_test_path, "rb") as f:
             x_test = pickle.load(f)
 #             x_test = cPickle.load(f)
     with open(Configure.test_fname_path, "rb") as f:
-            test_fname = pickle.load(f)
-    return x_train, y_train, x_test, test_fname
+        test_fname = pickle.load(f)
 
+    print('x_test:', x_test.shape, ', test_fname:', len(test_fname))
+    return x_test, test_fname 
 
 def save_dataset(x_train, y_train, x_test=None, test_fname=None):
     if x_train is not None:
@@ -54,3 +64,14 @@ def save_dataset(x_train, y_train, x_test=None, test_fname=None):
     if test_fname is not None:
         with open(Configure.test_fname_path, "wb") as f:
             pickle.dump(test_fname, f, -1)
+            
+def save_cleaned_dataset(x_train, y_train):
+    if x_train is not None:
+        with open(Configure.cleaned_x_train_path, "wb") as f:
+            pickle.dump(x_train, f, -1)
+#             cPickle.dump(x_train, f, -1)
+            
+    if y_train is not None:
+        with open(Configure.cleaned_y_train_path, "wb") as f:
+            pickle.dump(y_train, f, -1)
+#             cPickle.dump(y_train, f, -1)

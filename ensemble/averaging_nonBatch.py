@@ -42,11 +42,7 @@ def label_transform(labels, relabel=True, get_dummies=True):
         return(pd.get_dummies(pd.Series(nlabels)))
     return labels
 
-x_train, y_train, x_test, test_fname = data_util.load_dataset()
-print('x_train:', x_train.shape, ', y_train:', y_train.shape)
-print('x_test:', x_test.shape, ', test_fname:', len(test_fname))
-del x_train, y_train
-gc.collect()
+x_test, test_fname = data_util.load_test()
 
 weight = []
 #weight = [i/sum(weight) for i in weight]

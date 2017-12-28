@@ -104,7 +104,7 @@ def label_transform(labels, relabel=True, get_dummies=True):
         nlabels = labels
     if get_dummies:
         return(pd.get_dummies(pd.Series(nlabels)))
-    return labels
+    return nlabels
 
 
 # Next, we use functions declared above to generate x_train and y_train.
