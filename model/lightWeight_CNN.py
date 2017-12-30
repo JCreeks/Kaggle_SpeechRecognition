@@ -28,29 +28,30 @@ sys.path.append(module_path)
 
 relabel = True
 
-new_sample_rate = 8000
+from conf.configure import Configure
+from utils import data_util
+from utils.transform_util import label_transform, pad_audio, chop_audio, sampleRate
+
+new_sample_rate = sampleRate()#8000
 chopNum = 1000
 L = 16000
 legal_labels = 'yes no up down left right on off stop go silence unknown'.split()
 
-from conf.configure import Configure
-from utils import data_util
-
-def label_transform(labels, relabel=True, get_dummies=True):
-    nlabels = []
-    if relabel:
-        for label in labels:
-            if label == '_background_noise_':
-                nlabels.append('silence')
-            elif label not in legal_labels:
-                nlabels.append('unknown')
-            else:
-                nlabels.append(label)
-    else:
-        nlabels = labels
-    if get_dummies:
-        return(pd.get_dummies(pd.Series(nlabels)))
-    return labels
+# def label_transform(labels, relabel=True, get_dummies=True):
+#     nlabels = []
+#     if relabel:
+#         for label in labels:
+#             if label == '_background_noise_':
+#                 nlabels.append('silence')
+#             elif label not in legal_labels:
+#                 nlabels.append('unknown')
+#             else:
+#                 nlabels.append(label)
+#     else:
+#         nlabels = labels
+#     if get_dummies:
+#         return(pd.get_dummies(pd.Series(nlabels)))
+#     return labels
 
 x_train, y_train = data_util.load_train()
 
@@ -60,7 +61,7 @@ seed = 2017
 inp = Input(shape=input_shape)
 norm_inp = BatchNormalization()(inp)
 filtersList = [16,32,64] #default [8,16,32]
-epoch = 7 #default 3
+epoch = 5 #default 3
 img_1 = Convolution2D(filtersList[0], kernel_size=2, activation=activations.relu)(norm_inp)
 img_1 = Convolution2D(filtersList[0], kernel_size=2, activation=activations.relu)(img_1)
 img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
