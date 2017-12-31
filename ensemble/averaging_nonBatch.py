@@ -25,22 +25,23 @@ legal_labels = 'yes no up down left right on off stop go silence unknown'.split(
 
 from conf.configure import Configure
 from utils import data_util
+from utils.transform_util import label_transform, pad_audio, chop_audio, sampleRate
 
-def label_transform(labels, relabel=True, get_dummies=True):
-    nlabels = []
-    if relabel:
-        for label in labels:
-            if label == '_background_noise_':
-                nlabels.append('silence')
-            elif label not in legal_labels:
-                nlabels.append('unknown')
-            else:
-                nlabels.append(label)
-    else:
-        nlabels = labels
-    if get_dummies:
-        return(pd.get_dummies(pd.Series(nlabels)))
-    return labels
+# def label_transform(labels, relabel=True, get_dummies=True):
+#     nlabels = []
+#     if relabel:
+#         for label in labels:
+#             if label == '_background_noise_':
+#                 nlabels.append('silence')
+#             elif label not in legal_labels:
+#                 nlabels.append('unknown')
+#             else:
+#                 nlabels.append(label)
+#     else:
+#         nlabels = labels
+#     if get_dummies:
+#         return(pd.get_dummies(pd.Series(nlabels)))
+#     return labels
 
 x_test, test_fname = data_util.load_test()
 
@@ -65,6 +66,8 @@ predicts = [label_index[p] for p in predicts]
 if not relabel:
     predicts = label_transform(predicts, relabel=True, get_dummies=False)
 
+del x_test
+gc.collect()
 df = pd.DataFrame(columns=['fname', 'label'])
 df['fname'] = test_fname
 df['label'] = predicts

@@ -91,7 +91,7 @@ model.fit(x_train, y_train, batch_size=16, validation_data=(x_valid, y_valid), e
 modelName = 'sampleRate'+str(new_sample_rate)+'_nclass'+str(nclass)+'_seed'+str(seed)+'_chopNum'+str(chopNum)            +'_epoch'+str(epoch)+'_ConvDouble'+'.model'
 model.save(os.path.join(Configure.model_path, modelName))
 
-del x_train, y_train
+del x_train, x_valid, y_train, y_valid
 gc.collect()
 
 x_test, test_fname = data_util.load_test()

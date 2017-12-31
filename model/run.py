@@ -13,7 +13,7 @@ import sys
 module_path = os.path.abspath(os.path.join('..'))
 sys.path.append(module_path)
 
-cmd = 'rm ../output/*.csv'
+cmd = 'rm ../output/subm*.csv'
 os.system(cmd)
 
 cmd = 'python lightWeight_CNN.py'
