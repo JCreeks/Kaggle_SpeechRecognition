@@ -9,7 +9,14 @@ import numpy as np
 import pandas as pd
 
 def sampleRate():
-    return 8000
+    new_sample_rate =16000
+    print('\n sample rate: ', new_sample_rate, '\n')
+    return new_sample_rate
+
+def relabel():
+    relabel = True
+    print('\n relabel: ', relabel, '\n')
+    return relabel
 
 def pad_audio(samples, L=16000):
     if len(samples) >= L: return samples

@@ -26,12 +26,13 @@ from keras.models import load_model
 module_path = os.path.abspath(os.path.join('..'))
 sys.path.append(module_path)
 
-relabel = True
+
 
 from conf.configure import Configure
 from utils import data_util
-from utils.transform_util import label_transform, pad_audio, chop_audio, sampleRate
+from utils.transform_util import relabel, label_transform, pad_audio, chop_audio, sampleRate
 
+relabel = relabel()
 new_sample_rate = sampleRate()#8000
 chopNum = 1000
 L = 16000
@@ -55,7 +56,7 @@ legal_labels = 'yes no up down left right on off stop go silence unknown'.split(
 
 x_train, y_train = data_util.load_train()
 
-input_shape = (99, 81, 1)
+input_shape = (x_train.shape[1], x_train.shape[2], x_train.shape[3])
 nclass = y_train.shape[1]#12
 seed = 2017
 inp = Input(shape=input_shape)

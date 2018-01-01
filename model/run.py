@@ -18,3 +18,6 @@ os.system(cmd)
 
 cmd = 'python lightWeight_CNN.py'
 os.system(cmd)
+
+# cmd = 'GS_CNN2.py'
+# os.system(cmd)

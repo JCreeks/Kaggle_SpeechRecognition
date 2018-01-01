@@ -22,13 +22,12 @@ from keras.models import load_model
 module_path = os.path.abspath(os.path.join('..'))
 sys.path.append(module_path)
 
-relabel = True
 L = 16000
 legal_labels = 'yes no up down left right on off stop go silence unknown'.split()
 
 from conf.configure import Configure
 from utils import data_util
-from utils.transform_util import label_transform, pad_audio, chop_audio, sampleRate
+from utils.transform_util import relabel, label_transform, pad_audio, chop_audio, sampleRate
 
 
 # Here are custom_fft and log_specgram functions written by __DavidS__.
@@ -121,6 +120,7 @@ def list_wavs_fname2(dirpath, ext='wav'):
 
 labels, fnames = list_wavs_fname2(Configure.train_data_path)
 
+relabel = relabel()
 new_sample_rate = sampleRate() #8000
 chopNum = 1000 #default num=20
 y_train = []
@@ -133,7 +133,10 @@ for label, fname in zip(labels, fnames):
         n_samples = chop_audio(samples, num=chopNum)
     else: n_samples = [samples]
     for samples in n_samples:
-        resampled = signal.resample(samples, int(new_sample_rate / sample_rate * samples.shape[0]))
+        if new_sample_rate>=sample_rate:
+            resampled = samples
+        else:
+            resampled = signal.resample(samples, int(new_sample_rate / sample_rate * samples.shape[0]))
         _, _, specgram = log_specgram(resampled, sample_rate=new_sample_rate)
         y_train.append(label)
         x_train.append(specgram)
