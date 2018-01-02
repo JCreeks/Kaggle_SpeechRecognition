@@ -9,12 +9,12 @@ import numpy as np
 import pandas as pd
 
 def sampleRate():
-    new_sample_rate =16000
+    new_sample_rate =8000
     print('\n sample rate: ', new_sample_rate, '\n')
     return new_sample_rate
 
 def relabel():
-    relabel = True
+    relabel = False
     print('\n relabel: ', relabel, '\n')
     return relabel
 

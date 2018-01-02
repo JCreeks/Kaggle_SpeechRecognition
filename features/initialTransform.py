@@ -162,9 +162,9 @@ for path in fpaths:
     rate, samples = wavfile.read(path)
     samples = pad_audio(samples)
     if new_sample_rate>=sample_rate:
-            resampled = samples
-        else:
-            resampled = signal.resample(samples, int(new_sample_rate / sample_rate * samples.shape[0]))
+        resampled = samples
+    else:
+        resampled = signal.resample(samples, int(new_sample_rate / sample_rate * samples.shape[0]))
 #     resampled = signal.resample(samples, int(new_sample_rate / rate * samples.shape[0]))
     _, _, specgram = log_specgram(resampled, sample_rate=new_sample_rate)
 #     imgs.append(specgram)
