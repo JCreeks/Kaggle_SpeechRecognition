@@ -87,6 +87,7 @@ class CNN:
         return model
     
     def randomTune(param_grid, cv=3, n_iter_search=10):
+        np.random.seed(self.seed)
         x_train, y_train = data_util.load_train()
         
         self.input_shape = (x_train.shape[1], x_train.shape[2], x_train.shape[3])
