@@ -59,6 +59,7 @@ class CNN:
         self.params = {'batch_size': 18,
                        'epochs': 5,
                       }
+        self.fitted_model = None
 
     def model(input_shape=self.input_shape, nclass=self.nclass, filtersList=self.filtersList,
               img_activation=self.img_activation, dense_activation=self.dense_activation,
@@ -88,7 +89,7 @@ class CNN:
         model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
         return model
     
-    def tuneModel(param_grid, cv=3, n_iter_search=10):
+    def randomTune(param_grid, cv=3, n_iter_search=10):
         x_train, y_train = data_util.load_train()
         
         self.input_shape = (x_train.shape[1], x_train.shape[2], x_train.shape[3])
@@ -102,6 +103,7 @@ class CNN:
         print('start searching')
         start = time()
         random_search.fit(x_train, y_train)
+        self.fitted_model = random_search
         print("RandomizedSearchCV took %.2f mins for %d candidates"
               " parameter settings." % ((time() - start)/60, n_iter_search))
         self.report(random_search.cv_results_)
@@ -128,7 +130,10 @@ class CNN:
         label_index = ['down', 'go', 'left', 'no', 'off', 'on', 'right', 'silence', 'stop', 'unknown', 'up', 'yes']
         print("start predicting...")
         predList = []
-        model = self.model(**self.params)
+        model = self.fitted_model
+        if (model == None):
+            print('model not fitted yet!')
+            return
         predicts = model.predict(x_test)
         predicts = np.argmax(predicts, axis=1)
         predicts = [label_index[p] for p in predicts]
@@ -146,5 +151,8 @@ class CNN:
         new_sample_rate = sampleRate()
         modelName = 'sampleRate'+str(new_sample_rate)+'_nclass'+str(self.nclass)+'_seed'+str(self.seed)\
                     +'_epoch'+str(self.epoch)+'_CNN'+'.model'
-        model = self.model(**self.params)
+        model = self.fitted_model
+        if (model == None):
+            print('model not fitted yet!')
+            return
         model.save(os.path.join(Configure.model_path, modelName))
