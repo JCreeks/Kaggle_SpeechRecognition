@@ -56,9 +56,6 @@ class CNN:
         self.loss = 'binary_crossentropy'
         self.metrics=['accuracy']
         self.seed = 2018
-        self.params = {'batch_size': 18,
-                       'epochs': 5,
-                      }
         self.fitted_model = None
 
     def model(input_shape=self.input_shape, nclass=self.nclass, filtersList=self.filtersList,
@@ -114,8 +111,6 @@ class CNN:
         for i in range(1, n_top + 1):
             candidates = np.flatnonzero(results['rank_test_score'] == i)
             for candidate in candidates:
-                if i == 1:
-                    self.params = results['params'][candidate]
                 print("Model with rank: {0}".format(i))
                 print("Mean validation score: {0:.3f} (std: {1:.3f})".format(
                       results['mean_test_score'][candidate],
