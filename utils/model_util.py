@@ -46,7 +46,7 @@ class CNN:
     def __init__(self):
         self.input_shape = (99,81,1)
         self.nclass = 12
-        self.epoch = 5
+        self.epochs = 5
         self.batch_size =18
         self.filtersList = [16,32,64,128]
         self.img_activation = 'relu'
@@ -92,7 +92,8 @@ class CNN:
         self.input_shape = (x_train.shape[1], x_train.shape[2], x_train.shape[3])
         self.nclass = y_train.shape[1]
         
-        model = KerasClassifier(build_fn=self.model(), verbose=0)
+        model = KerasClassifier(build_fn=self.model(), verbose=0, epochs=self.epochs, 
+                                batch_size=self.batch_size)
 
         # run randomized search
         random_search = RandomizedSearchCV(model, param_distributions=param_grid, verbose=0,
