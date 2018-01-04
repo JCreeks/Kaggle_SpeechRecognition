@@ -1,0 +1,91 @@
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+outlier num:  12
+../input/train/audio
+x_train: (70709, 99, 81, 1) , y_train: (70709, 12)
+Save train data...
+
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+../input/train/audio
+x_train: (70721, 99, 81, 1) , y_train: (29683, 12)
+Save train data...
+x_test: (158538, 99, 81, 1) , test_fname: 158538
+Save test data...
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+outlier num:  12
+../input/train/audio
+x_train: (70709, 99, 81, 1) , y_train: (29671, 12)
+Save train data...
+done saving cleaned data!
+
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+../input/train/audio
+new_sample_rate:  16000
+x_train: (70721, 99, 161, 1) , y_train: (70721, 12)
+Save train data...
+x_test: (158538, 99, 161, 1) , test_fname: 158538
+Save test data...
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+outlier num:  12
+../input/train/audio
+new_sample_rate:  16000
+x_train: (70709, 99, 161, 1) , y_train: (70709, 12)
+Save train data...
+done saving cleaned data!
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+../input/train/audio
+
+ relabel:  True 
+
+
+ sample rate:  8000 
+
+x_train: (70721, 99, 81, 1) , y_train: (70721, 12)
+Save train data...
+x_test: (158538, 99, 81, 1) , test_fname: 158538
+Save test data...
+Using TensorFlow backend.
+/home/ubuntu/anaconda3/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module 'tensorflow.python.framework.fast_tensor_util' does not match runtime version 3.6
+  return f(*args, **kwds)
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/scipy/io/wavfile.py:273: WavFileWarning: Chunk (non-data) not understood, skipping it.
+  WavFileWarning)
+outlier num:  12
+../input/train/audio
+
+ relabel:  True 
+
+
+ sample rate:  8000 
+
+x_train: (70709, 99, 81, 1) , y_train: (70709, 12)
+Save train data...
+done saving cleaned data!
