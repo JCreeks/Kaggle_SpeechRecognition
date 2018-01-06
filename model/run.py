@@ -16,8 +16,8 @@ sys.path.append(module_path)
 cmd = 'rm ../output/subm*.csv'
 os.system(cmd)
 
-# cmd = 'python lightWeight_CNN.py'
-# os.system(cmd)
-
-cmd = 'python GS_CNN2.py'
+cmd = 'python lightWeight_CNN.py'
 os.system(cmd)
+
+#cmd = 'python GS_CNN2.py'
+#os.system(cmd)

@@ -57,22 +57,26 @@ class CNN:
         self.metrics=['accuracy']
         self.seed = 2018
         self.fitted_model = None
+        self.kernel_size_0 = 2
+        self.kernel_size_1 = 3
+        self.kernel_size_2 = 3
+        self.param_grid = {}
 
-    def model(input_shape=self.input_shape, nclass=self.nclass, filtersList=self.filtersList,
-              img_activation=self.img_activation, dense_activation=self.dense_activation,
-              dropout_rate=self.dropout_rate, optimizer=self.optimizer, loss=self.loss,
-              metrics=self.metrics):
+    def model(self, input_shape=(99,81,1), nclass=12, filtersList=[16,32,64,128],
+              img_activation='relu', dense_activation='softmax', dropout_rate=0.2, 
+              optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
+              ):
         inp = Input(shape=input_shape)
         norm_inp = BatchNormalization()(inp)
-        img_1 = Convolution2D(filtersList[0], kernel_size=2, activation=img_activation)(norm_inp)
-        img_1 = Convolution2D(filtersList[0], kernel_size=2, activation=img_activation)(img_1)
+        img_1 = Convolution2D(filtersList[0], kernel_size=self.kernel_size_0, activation=img_activation)(norm_inp)
+        img_1 = Convolution2D(filtersList[0], kernel_size=self.kernel_size_0, activation=img_activation)(img_1)
         img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
         img_1 = Dropout(rate=dropout_rate)(img_1)
-        img_1 = Convolution2D(filtersList[1], kernel_size=3, activation=img_activation)(img_1)
-        img_1 = Convolution2D(filtersList[1], kernel_size=3, activation=img_activation)(img_1)
+        img_1 = Convolution2D(filtersList[1], kernel_size=self.kernel_size_1, activation=img_activation)(img_1)
+        img_1 = Convolution2D(filtersList[1], kernel_size=self.kernel_size_1, activation=img_activation)(img_1)
         img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
         img_1 = Dropout(rate=dropout_rate)(img_1)
-        img_1 = Convolution2D(filtersList[2], kernel_size=3, activation=img_activation)(img_1)
+        img_1 = Convolution2D(filtersList[2], kernel_size=self.kernel_size_2, activation=img_activation)(img_1)
         img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
         img_1 = Dropout(rate=dropout_rate)(img_1)
         img_1 = Flatten()(img_1)
@@ -86,16 +90,23 @@ class CNN:
         model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
         return model
     
-    def randomTune(param_grid, cv=3, n_iter_search=10):
-        np.random.seed(self.seed)
-        x_train, y_train = data_util.load_train()
+    def randomTune(self, x_train, y_train, param_grid, cv=3, n_iter_search=10):
+        # x_train, y_train = data_util.load_train()
         
         self.input_shape = (x_train.shape[1], x_train.shape[2], x_train.shape[3])
         self.nclass = y_train.shape[1]
-        
-        model = KerasClassifier(build_fn=self.model(), verbose=0, epochs=self.epochs, 
-                                batch_size=self.batch_size)
 
+        paramList = ['input_shape', 'nclass', 'epochs', 'filtersList', 'img_activation', 
+                    'dense_activation', 'dropout_rate', 'optimizer', 'loss', 'metrics',
+                    ]
+        paramDict = {}
+        for param in paramList:
+            paramDict[param] = getattr(self,param) 
+        
+        model = KerasClassifier(build_fn=self.model(), verbose=0, 
+                                epochs=self.epochs, batch_size=self.batch_size)
+
+        np.random.seed(self.seed)
         # run randomized search
         random_search = RandomizedSearchCV(model, param_distributions=param_grid, verbose=0,
                                            n_iter=n_iter_search, n_jobs=-1, cv=cv)
@@ -109,7 +120,7 @@ class CNN:
 
         print('done!')
         
-    def report(results, n_top=3):
+    def report(self, results, n_top=3):
         for i in range(1, n_top + 1):
             candidates = np.flatnonzero(results['rank_test_score'] == i)
             for candidate in candidates:
@@ -119,8 +130,16 @@ class CNN:
                       results['std_test_score'][candidate]))
                 print("Parameters: {0}".format(results['params'][candidate]))
                 print("")
+                
+    def predict(self, x_test):
+        model = self.fitted_model
+        if (model == None):
+            print('model not fitted yet!')
+            return
+        predicts = model.predict(x_test)
+        return predicts
           
-    def predict():
+    def predict_save(self):
         relabel = relabel()
         x_test, test_fname = data_util.load_test()
 
@@ -144,7 +163,7 @@ class CNN:
 
         print('done!')
         
-    def save_model():        
+    def save_model(self):        
         new_sample_rate = sampleRate()
         modelName = 'sampleRate'+str(new_sample_rate)+'_nclass'+str(self.nclass)+'_seed'+str(self.seed)\
                     +'_epoch'+str(self.epoch)+'_CNN'+'.model'

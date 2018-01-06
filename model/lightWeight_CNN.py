@@ -61,7 +61,8 @@ seed = 2017
 inp = Input(shape=input_shape)
 norm_inp = BatchNormalization()(inp)
 filtersList = [16,32,64] #default [8,16,32]
-epoch = 5 #default 3
+epoch = 10 #default 3
+batch_size = 20
 img_1 = Convolution2D(filtersList[0], kernel_size=2, activation=activations.relu)(norm_inp)
 img_1 = Convolution2D(filtersList[0], kernel_size=2, activation=activations.relu)(img_1)
 img_1 = MaxPooling2D(pool_size=(2, 2))(img_1)
@@ -86,9 +87,9 @@ model.compile(optimizer=opt, loss=losses.binary_crossentropy)
 model.summary()
 
 x_train, x_valid, y_train, y_valid = train_test_split(x_train, y_train, test_size=0.1, random_state=seed)
-model.fit(x_train, y_train, batch_size=16, validation_data=(x_valid, y_valid), epochs=epoch, shuffle=True, verbose=2)
+model.fit(x_train, y_train, batch_size=batch_size, validation_data=(x_valid, y_valid), epochs=epoch, shuffle=True, verbose=2)
 
-modelName = 'sampleRate'+str(new_sample_rate)+'_nclass'+str(nclass)+'_seed'+str(seed)+'_chopNum'+str(chopNum)            +'_epoch'+str(epoch)+'_ConvDouble'+'.model'
+modelName = 'sampleRate'+str(new_sample_rate)+'_nclass'+str(nclass)+'_seed'+str(seed)+'_batchSize'+str(batch_size)            +'_epoch'+str(epoch)+'_ConvDouble'+'.model'
 model.save(os.path.join(Configure.model_path, modelName))
 
 del x_train, x_valid, y_train, y_valid

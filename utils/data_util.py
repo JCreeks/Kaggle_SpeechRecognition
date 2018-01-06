@@ -34,16 +34,20 @@ def load_train():
     print('x_train:', x_train.shape, ', y_train:', y_train.shape)
     return x_train, y_train
 
-def load_test():
-    if not os.path.exists(Configure.processed_test_path):
-        with open(Configure.x_test_path, "rb") as f:
-            x_test = pickle.load(f)
-#             x_test = cPickle.load(f)
+def load_test(xTest = True):
     with open(Configure.test_fname_path, "rb") as f:
         test_fname = pickle.load(f)
+    
+    if xTest:
+        if not os.path.exists(Configure.processed_test_path):
+            with open(Configure.x_test_path, "rb") as f:
+                x_test = pickle.load(f)
 
-    print('x_test:', x_test.shape, ', test_fname:', len(test_fname))
-    return x_test, test_fname 
+        print('x_test:', x_test.shape, ', test_fname:', len(test_fname))
+        return x_test, test_fname 
+    
+    print('test_fname:', len(test_fname))
+    return test_fname 
 
 def save_dataset(x_train, y_train, x_test=None, test_fname=None):
     if x_train is not None:
