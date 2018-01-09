@@ -19,15 +19,16 @@ from keras.models import load_model
 module_path = os.path.abspath(os.path.join('..'))
 sys.path.append(module_path)
 
-# from keras import backend as K
-# import tensorflow as tf
+from keras import backend as K
+import tensorflow as tf
 
-# config = tf.ConfigProto(intra_op_parallelism_threads=args.jobs, 
-#                         inter_op_parallelism_threads=args.jobs, 
-#                         allow_soft_placement=True, 
-#                         device_count = {'CPU': args.jobs})
-# session = tf.Session(config=config)
-# K.set_session(session)
+n_jobs=50
+config = tf.ConfigProto(intra_op_parallelism_threads=n_jobs, 
+                        inter_op_parallelism_threads=n_jobs, 
+                        allow_soft_placement=True, 
+                        device_count = {'GPU': n_jobs})
+session = tf.Session(config=config)
+K.set_session(session)
 
 from conf.configure import Configure
 from utils import data_util
@@ -54,7 +55,7 @@ def comp_cls_wts(y, pwr = 0.2):
     labelCount = y.sum(axis=0)
     dic = {}
     for i in range(y.shape[1]):
-        print(labelCount[i])
+#         print(labelCount[i])
         dic[i] = labelCount[i]**pwr/np.sum(labelCount)**pwr
     return dic
 
