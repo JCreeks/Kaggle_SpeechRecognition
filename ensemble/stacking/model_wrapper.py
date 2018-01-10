@@ -19,6 +19,7 @@ from abc import ABCMeta, abstractmethod
 from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import make_scorer, mean_squared_error, r2_score
 
+R2 = make_scorer(r2_score, greater_is_better=True)
 
 class BaseWrapper(object):
     __metaclass__ = ABCMeta
@@ -46,6 +47,9 @@ class SklearnWrapper(BaseWrapper):
 
     def predict(self, x):
         return self.clf.predict(x)
+    
+    def predict_proba(self, x):
+        return self.clf.predict_proba(x)
 
 
 class XgbWrapper(BaseWrapper):
